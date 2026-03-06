@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+        - name: springboot-container
+          image: manjithes/tejait-springboot-kubernetes:v3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          # IMPORTANT: Add these for the HPA to work
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          env:
+            # Connect to your ConfigMap instead of the Secret
+            - name: APP_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: springboot-config
+                  key: APP_MESSAGE
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: springboot-config
+                  key: LOG_LEVEL
