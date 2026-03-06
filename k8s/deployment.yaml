@@ -1,40 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springboot-app
+  name: spring-git-jenkins-docker
+  labels:
+    app: spring-git-jenkins-docker
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: springboot-app
+      app: spring-git-jenkins-docker
   template:
     metadata:
       labels:
-        app: springboot-app
+        app: spring-git-jenkins-docker
     spec:
       containers:
-        - name: springboot-container
-          image: manjithes/tejait-springboot-kubernetes:v3
-          imagePullPolicy: Always
+        - name: spring-git-jenkins-docker
+          image: manjithes/spring-git-jenkins-docker-image-docker-hub-kubernetes:v1
           ports:
             - containerPort: 8080
-          # IMPORTANT: Add these for the HPA to work
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
-          env:
-            # Connect to your ConfigMap instead of the Secret
-            - name: APP_MESSAGE
-              valueFrom:
-                configMapKeyRef:
-                  name: springboot-config
-                  key: APP_MESSAGE
-            - name: LOG_LEVEL
-              valueFrom:
-                configMapKeyRef:
-                  name: springboot-config
-                  key: LOG_LEVEL
