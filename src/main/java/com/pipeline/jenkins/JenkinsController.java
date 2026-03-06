@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("jenkins")
 public class JenkinsController {
-    
+
     @GetMapping("welcome")
     public String welocme(){
         return "Welcome to Jenkins user Manjith";
     }
+    // added comment for maven to test weather it is updating in every minute in Jenkins
 }
